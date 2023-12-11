@@ -1,13 +1,12 @@
-use rocket::{get, routes};
+use axum::{routing::get, Router};
 
-#[get("/")]
-fn index() -> &'static str {
+async fn hello_world() -> &'static str {
     "Hello, world!"
 }
 
 #[shuttle_runtime::main]
-async fn main() -> shuttle_rocket::ShuttleRocket {
-    let rocket = rocket::build().mount("/", routes![index]);
+async fn main() -> shuttle_axum::ShuttleAxum {
+    let router = Router::new().route("/", get(hello_world));
 
-    Ok(rocket.into())
+    Ok(router.into())
 }
